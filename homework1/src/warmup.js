@@ -24,14 +24,14 @@ function change (amount) {
   return [quarters, dimes, nickels, pennies];
 }
 
-console.log(change(97));
+/* console.log(change(97));
 console.log(change(8));
 console.log(change(250));
 console.log(change(144));
 console.log(change(97));
-//console.log(change(-4));
+console.log(change(-4));
 console.log(change(0));
-console.log(change(1000000000));
+console.log(change(1000000000)); */
 
 
 function stripQuotes(input) {
