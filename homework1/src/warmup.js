@@ -1,3 +1,5 @@
+const rp = require('request-promise');
+
 exports.change = (amount) => {
   if (amount === 0) {
     return [0, 0, 0, 0];
@@ -53,25 +55,19 @@ exports.say = (word) => {
 };
 
 exports.interleave = (a, ...b) => {
-  const resLen = a.length + b.length
   const result = [];
-  for (let i = 0; i <= a.length; i += 1) {
-    result.push(a[i]);
-    result.push(b[i]);
-    if (result.length > resLen) {
-      result.pop();
+  for (let i = 0; i <= Math.max(a.length, b.length); i += 1) {
+    if (i < a.length) {
+      result.push(a[i]);
+    }
+    if (i < b.length) {
+      result.push(b[i]);
     }
   }
-
   return result;
 };
 
-exports.randomName = (gen, reg) => {
-  const rp = require('request-promise');
-  const gender = gen;
-  const region = reg;
-  rp({
-    uri: 'http://uinames.com/api',
-    qs: { gender, region },
-  }).then(person => person);
-};
+exports.randomName = ({ gender, region }) => rp({
+  uri: 'https://uinames.com/api',
+  qs: { gender, region },
+}).then(person => `${person.surname}, ${person.name}`);

@@ -56,7 +56,7 @@ describe('stripQuotes', () => {
 describe('scramble', () => {
   it('scrambles properly', () => {
     ['a', 'rat', 'JavaScript testing', '', 'zzz', '^*^*)^▱ÄÈËɡɳɷ'].forEach(s =>
-      anagramsOfEachOther(s, scramble(s)).should.be.true);
+      anagramsOfEachOther(s, scramble(s)).should.be.true); // eslint-disable-line 
   });
 
   it('is really random (produces all permutations)', () => {
