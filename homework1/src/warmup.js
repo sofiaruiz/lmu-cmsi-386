@@ -1,5 +1,8 @@
 const rp = require('request-promise');
 
+
+const crypto = require('crypto');
+
 exports.change = (amount) => {
   if (amount === 0) {
     return [0, 0, 0, 0];
@@ -65,6 +68,40 @@ exports.interleave = (a, ...b) => {
     }
   }
   return result;
+};
+
+exports.cylinder = (spec) => {
+  let { radius = 1, height = 1 } = spec;
+  const surfaceArea = () => ((2 * Math.PI * radius * height) + (2 * Math.PI * (radius ** 2)));
+  const volume = () => (Math.PI * (radius ** 2) * height);
+  const stretch = (grow) => { radius *= grow; };
+  const widen = (factor) => { height *= factor; };
+  const toString = () => `Cylinder with radius ${radius} and height ${height}`;
+  return Object.freeze({
+    get radius() { return radius; },
+    get height() { return height; },
+    surfaceArea,
+    volume,
+    stretch,
+    widen,
+    toString,
+  });
+};
+
+exports.makeCryptoFunctions = (cryptoKey, cryptoAlgorithm) => {
+  function encrypt(text) {
+    const encode = crypto.createCipher(cryptoAlgorithm, cryptoKey);
+    let encryptIt = encode.update(text, 'utf8', 'hex');
+    encryptIt += encode.final('hex');
+    return encryptIt;
+  }
+  function decrypt(text) {
+    const decode = crypto.createDecipher(cryptoAlgorithm, cryptoKey);
+    let decyptIt = decode.update(text, 'hex', 'utf8');
+    decyptIt += decode.final('utf8');
+    return decyptIt;
+  }
+  return [encrypt, decrypt];
 };
 
 exports.randomName = ({ gender, region }) => rp({
