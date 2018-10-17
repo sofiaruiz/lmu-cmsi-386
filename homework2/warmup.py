@@ -1,4 +1,4 @@
-import requests
+import requests, json
 import random
 import math
 from cryptography.fernet import Fernet
@@ -79,10 +79,20 @@ class Cylinder():
         return self
 
 def make_crypto_functions(key):
-    pass
+    f = Fernet(key)
+    def encrypt(text):
+        return f.encrypt(text)
+    def decrypt(encryption):
+        return f.decrypt(encryption)
+
+    return (encrypt, decrypt)
+
 
 
 def random_name(**kwargs):
-    params = {'gender' : kwargs.get('gender'), 'region' : kwargs.get('region')}
-    response = request.get("http://api.uninames.com", params=params)
-    return  response.json()
+    params = {'gender' : kwargs.get('gender'), 'region' : kwargs.get('region'), 'amount': 1}
+    response = requests.get("http://uinames.com/api", params=params)
+    if response.status_code in range(200, 300):
+        person_info = response.json()
+        return f'{person_info["surname"]}, {person_info["name"]}'
+    raise ValueError(response.text)
