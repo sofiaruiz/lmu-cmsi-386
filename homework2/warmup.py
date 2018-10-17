@@ -1,12 +1,12 @@
-import requests, json
 import random
 import math
+import requests
 from cryptography.fernet import Fernet
 
-def change (amount):
-    if (amount == 0):
+def change(amount):
+    if amount == 0:
         return (0, 0, 0, 0)
-    if (amount < 0):
+    if amount < 0:
         raise ValueError('amount cannot be negative')
 
     init_amount = amount
@@ -24,17 +24,17 @@ def change (amount):
     return (quarters, dimes, nickels, pennies)
 
 
-def strip_quotes (input):
-    return input.replace('"','').replace("'", '')
+def strip_quotes(strip):
+    return strip.replace('"', '').replace("'", '')
 
-def scramble (s):
-    return ''.join(random.sample(s,len(s)))
+def scramble(scramb):
+    return ''.join(random.sample(scramb, len(scramb)))
 
 def powers(base, limit):
-    x = 1
-    while x <= limit:
-        yield x
-        x *= base
+    num = 1
+    while num <= limit:
+        yield num
+        num *= base
   # for (let x = 1; x <= limit; x *= base) {
   #   yield x;
   # }
@@ -50,17 +50,17 @@ def say(word=None):
     return say_more
 
 
-def interleave(a, *b):
-    result = [];
-    for i in range(max(len(a), len(b))):
-        if (i < len(a)):
-            result.append(a[i])
-        if (i < len(b)):
+def interleave(first, *b):
+    result = []
+    for i in range(max(len(first), len(b))):
+        if i < len(first):
+            result.append(first[i])
+        if i < len(b):
             result.append(b[i])
-    return result;
+    return result
 
 class Cylinder():
-    def __init__(self, radius = 1, height = 1):
+    def __init__(self, radius=1, height=1):
         self.radius = radius
         self.height = height
     @property
@@ -68,7 +68,7 @@ class Cylinder():
         return math.pi * (self.radius ** 2) * self.height
     @property
     def surface_area(self):
-        return ((2 * math.pi * self.radius * self.height) + (2 * math.pi * (self.radius ** 2)))
+        return (2 * math.pi * self.radius * self.height) + (2 * math.pi * (self.radius ** 2))
 
     def widen(self, factor):
         self.radius *= factor
@@ -79,11 +79,11 @@ class Cylinder():
         return self
 
 def make_crypto_functions(key):
-    f = Fernet(key)
+    f_key = Fernet(key)
     def encrypt(text):
-        return f.encrypt(text)
+        return f_key.encrypt(text)
     def decrypt(encryption):
-        return f.decrypt(encryption)
+        return f_key.decrypt(encryption)
 
     return (encrypt, decrypt)
 
